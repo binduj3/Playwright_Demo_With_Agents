@@ -1,0 +1,39 @@
+// pages/RegistrationPage.js
+class RegistrationPage {
+  constructor(page) {
+    this.page = page;
+    this.firstName = page.getByRole('textbox', { name: 'First Name' });
+    this.lastName = page.getByRole('textbox', { name: 'Last Name' });
+    this.email = page.getByPlaceholder('email@example.com');
+    this.phone = page.getByPlaceholder('enter your number');
+    this.occupation = page.getByRole('combobox');
+    this.male = page.getByRole('radio', { name: 'Male', exact: true });
+    this.female = page.getByRole('radio', { name: 'Female', exact: true });
+    this.password = page.getByRole('textbox', { name: 'Passsword' });
+    this.confirmPassword = page.getByRole('textbox', { name: 'Confirm Password' });
+    this.ageConfirmation = page.getByRole('checkbox');
+    this.registerButton = page.getByRole('button', { name: 'Register' });
+  }
+
+  async goTo() {
+    await this.page.goto('#/auth/register');
+  }
+
+  async fillForm({ firstName, lastName, email, phone, occupation, gender, password }) {
+    await this.firstName.fill(firstName);
+    await this.lastName.fill(lastName);
+    await this.email.fill(email);
+    await this.phone.fill(phone);
+    await this.occupation.selectOption({ label: occupation });
+    await (gender === 'Female' ? this.female : this.male).check();
+    await this.password.fill(password);
+    await this.confirmPassword.fill(password);
+    await this.ageConfirmation.check();
+  }
+
+  async submit() {
+    await this.registerButton.click();
+  }
+}
+
+module.exports = { RegistrationPage };
